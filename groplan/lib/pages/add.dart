@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:groplan/components/category_card.dart';
 
 class AddPage extends StatefulWidget {
   @override
@@ -104,7 +105,20 @@ class _AddPageState extends State<AddPage> {
                             title: new Text(listData.toString()),
                           );
                         },
-                      ))
+                      )),
+            Expanded(
+                child: Row(
+              children: [
+                CategoryCard(
+                  titleText: Text("Fruits"),
+                  imgname: "images/fruits.jpg",
+                ),
+                CategoryCard(
+                  titleText: Text("Fruits"),
+                  imgname: "images/fruits.jpg",
+                )
+              ],
+            ))
           ],
         ));
   }
