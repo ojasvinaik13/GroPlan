@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:groplan/pages/add.dart';
 import 'package:groplan/pages/calendar.dart';
 import 'package:groplan/pages/lists.dart';
 
@@ -39,7 +40,13 @@ class _HomePageState extends State<HomePage> {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
         backgroundColor: Color(0xFF72C077),
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(context, MaterialPageRoute(
+            builder: (BuildContext context) {
+              return AddPage();
+            },
+          ));
+        },
         child: Icon(
           Icons.add,
           size: 40.0,
