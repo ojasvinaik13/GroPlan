@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 
 class CategoryCard extends StatelessWidget {
-  CategoryCard(
-      {@required this.titleText, this.onClick, @required this.imgname});
+  CategoryCard({this.titleText, this.onClick, @required this.imgname});
 
   final Widget titleText;
   final Function onClick;
@@ -12,17 +11,29 @@ class CategoryCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onClick,
-      child: Card(
-        child: Container(
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage(imgname),
-              fit: BoxFit.fitWidth,
+      child: Stack(
+        children: <Widget>[
+          Container(
+            alignment: Alignment.center,
+            margin: EdgeInsets.all(15.0),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10.0),
+              image: DecorationImage(
+                image: AssetImage(imgname),
+                fit: BoxFit.cover,
+              ),
             ),
           ),
-          child: titleText,
-        ),
-        margin: EdgeInsets.all(15.0),
+          Container(
+            alignment: Alignment.center,
+            margin: EdgeInsets.all(15.0),
+            child: titleText,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10.0),
+              color: Color.fromRGBO(0, 0, 0, 0.5),
+            ),
+          )
+        ],
       ),
     );
   }
