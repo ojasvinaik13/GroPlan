@@ -14,6 +14,8 @@ class CategoryCard extends StatelessWidget {
       child: Stack(
         children: <Widget>[
           Container(
+            width: MediaQuery.of(context).size.width / 2,
+            height: MediaQuery.of(context).size.height / 4,
             alignment: Alignment.center,
             margin: EdgeInsets.all(15.0),
             decoration: BoxDecoration(
@@ -25,6 +27,8 @@ class CategoryCard extends StatelessWidget {
             ),
           ),
           Container(
+            width: MediaQuery.of(context).size.width / 2,
+            height: MediaQuery.of(context).size.height / 4,
             alignment: Alignment.center,
             margin: EdgeInsets.all(15.0),
             child: titleText,

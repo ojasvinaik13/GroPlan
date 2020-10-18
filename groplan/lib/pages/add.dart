@@ -63,11 +63,16 @@ class _AddPageState extends State<AddPage> {
 
   void values() {
     _list = List();
-    _list.add("Apples");
-    _list.add("Bananas");
-    _list.add("Grapes");
-    _list.add("Blueberry");
-    _list.add("Strawberry");
+    _list.add("Fruits");
+    _list.add("Vegetables");
+    _list.add("Dairy");
+    _list.add("Bakery");
+    _list.add("Packaged");
+    _list.add("Refrigerated");
+    _list.add("Essentials");
+    _list.add("Oils and Sauces");
+    _list.add("Household Items");
+    _list.add("Spices");
   }
 
   @override
@@ -80,89 +85,116 @@ class _AddPageState extends State<AddPage> {
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            TextField(
-              controller: _searchController,
-              onChanged: search,
+            Container(
+              margin: EdgeInsets.all(15.0),
+              child: TextField(
+                decoration: const InputDecoration(
+                  hintText: "Search",
+                  suffixIcon: Icon(Icons.search),
+                ),
+                controller: _searchController,
+                onChanged: search,
+              ),
             ),
 
-            // Flexible(
-            //     child: searchresult.length != 0 ||
-            //             _searchController.text.isNotEmpty
-            //         ? new ListView.builder(
-            //             shrinkWrap: true,
-            //             itemCount: searchresult.length,
-            //             itemBuilder: (BuildContext context, int index) {
-            //               String listData = searchresult[index];
-            //               return new ListTile(
-            //                 title: new Text(listData.toString()),
-            //               );
-            //             },
-            //           )
-            //         : new ListView.builder(
-            //             shrinkWrap: true,
-            //             itemCount: _list.length,
-            //             itemBuilder: (BuildContext context, int index) {
-            //               String listData = _list[index];
-            //               return new ListTile(
-            //                 title: new Text(listData.toString()),
-            //               );
-            //             },
-            //           )),
-            Expanded(
-                child: Row(
-              children: <Widget>[
-                Expanded(
-                    child: CategoryCard(
-                  titleText: Text(
-                    "Fruits",
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  imgname: "images/fruits.jpg",
-                )),
-                Expanded(
-                    child: CategoryCard(
-                  titleText:
-                      Text("Fruits", style: TextStyle(color: Colors.white)),
-                  imgname: "images/fruits.jpg",
-                )),
-              ],
-            )),
-            Expanded(
-                child: Row(
-              children: <Widget>[
-                Expanded(
-                    child: CategoryCard(
-                  titleText:
-                      Text("Fruits", style: TextStyle(color: Colors.white)),
-                  imgname: "images/fruits.jpg",
-                )),
-                Expanded(
-                    child: CategoryCard(
-                  titleText:
-                      Text("Fruits", style: TextStyle(color: Colors.white)),
-                  imgname: "images/fruits.jpg",
-                )),
-              ],
-            )),
-            Expanded(
-                child: Row(
-              children: <Widget>[
-                Expanded(
-                    child: CategoryCard(
-                  titleText:
-                      Text("Fruits", style: TextStyle(color: Colors.white)),
-                  imgname: "images/fruits.jpg",
-                )),
-                Expanded(
-                    child: CategoryCard(
-                  titleText: Text(
-                    "Fruits",
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  imgname: "images/fruits.jpg",
-                )),
-              ],
-            )),
+            Flexible(
+                child: searchresult.length != 0 ||
+                        _searchController.text.isNotEmpty
+                    ? new GridView.builder(
+                        shrinkWrap: true,
+                        gridDelegate:
+                            new SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2),
+                        itemCount: searchresult.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          String listData = searchresult[index];
+                          List<String> name =
+                              (listData.toString().toLowerCase()).split(" ");
+                          String imgname = name[0];
+                          return new CategoryCard(
+                            imgname: "images/$imgname.jpg",
+                            titleText: new Text(
+                              listData.toString(),
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          );
+                        },
+                      )
+                    : new GridView.builder(
+                        shrinkWrap: true,
+                        gridDelegate:
+                            new SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2),
+                        itemCount: _list.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          String listData = _list[index];
+                          List<String> name =
+                              (listData.toString().toLowerCase()).split(" ");
+                          String imgname = name[0];
+                          return new CategoryCard(
+                            imgname: "images/$imgname.jpg",
+                            titleText: new Text(
+                              listData.toString(),
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          );
+                        },
+                      )),
+            // Expanded(
+            //     child: Row(
+            //   children: <Widget>[
+            //     Expanded(
+            //         child: CategoryCard(
+            //       titleText: Text(
+            //         "Fruits",
+            //         style: TextStyle(color: Colors.white),
+            //       ),
+            //       imgname: "images/fruits.jpg",
+            //     )),
+            //     Expanded(
+            //         child: CategoryCard(
+            //       titleText:
+            //           Text("Fruits", style: TextStyle(color: Colors.white)),
+            //       imgname: "images/fruits.jpg",
+            //     )),
+            //   ],
+            // )),
+            // Expanded(
+            //     child: Row(
+            //   children: <Widget>[
+            //     Expanded(
+            //         child: CategoryCard(
+            //       titleText:
+            //           Text("Fruits", style: TextStyle(color: Colors.white)),
+            //       imgname: "images/fruits.jpg",
+            //     )),
+            //     Expanded(
+            //         child: CategoryCard(
+            //       titleText:
+            //           Text("Fruits", style: TextStyle(color: Colors.white)),
+            //       imgname: "images/fruits.jpg",
+            //     )),
+            //   ],
+            // )),
+            // Expanded(
+            //     child: Row(
+            //   children: <Widget>[
+            //     Expanded(
+            //         child: CategoryCard(
+            //       titleText:
+            //           Text("Fruits", style: TextStyle(color: Colors.white)),
+            //       imgname: "images/fruits.jpg",
+            //     )),
+            //     Expanded(
+            //         child: CategoryCard(
+            //       titleText: Text(
+            //         "Fruits",
+            //         style: TextStyle(color: Colors.white),
+            //       ),
+            //       imgname: "images/fruits.jpg",
+            //     )),
+            //   ],
+            // )),
           ],
         ));
   }
