@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:groplan/components/category_card.dart';
+import 'package:groplan/pages/itemsAdd.dart';
 
 class AddPage extends StatefulWidget {
   @override
@@ -115,7 +116,11 @@ class _AddPageState extends State<AddPage> {
                             imgname: "images/$imgname.jpg",
                             titleText: new Text(
                               listData.toString(),
-                              style: TextStyle(color: Colors.white),
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 25.0,
+                                  fontWeight: FontWeight.bold),
                             ),
                           );
                         },
@@ -132,10 +137,21 @@ class _AddPageState extends State<AddPage> {
                               (listData.toString().toLowerCase()).split(" ");
                           String imgname = name[0];
                           return new CategoryCard(
+                            onClick: () {
+                              Navigator.push(context, MaterialPageRoute(
+                                builder: (BuildContext context) {
+                                  return ItemsAddPage(listData.toString());
+                                },
+                              ));
+                            },
                             imgname: "images/$imgname.jpg",
                             titleText: new Text(
                               listData.toString(),
-                              style: TextStyle(color: Colors.white),
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 25.0,
+                                  fontWeight: FontWeight.bold),
                             ),
                           );
                         },
