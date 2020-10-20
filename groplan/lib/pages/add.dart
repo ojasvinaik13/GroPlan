@@ -113,6 +113,13 @@ class _AddPageState extends State<AddPage> {
                               (listData.toString().toLowerCase()).split(" ");
                           String imgname = name[0];
                           return new CategoryCard(
+                            onClick: () {
+                              Navigator.push(context, MaterialPageRoute(
+                                builder: (BuildContext context) {
+                                  return ItemsAddPage(imgname);
+                                },
+                              ));
+                            },
                             imgname: "images/$imgname.jpg",
                             titleText: new Text(
                               listData.toString(),
@@ -140,7 +147,7 @@ class _AddPageState extends State<AddPage> {
                             onClick: () {
                               Navigator.push(context, MaterialPageRoute(
                                 builder: (BuildContext context) {
-                                  return ItemsAddPage(listData.toString());
+                                  return ItemsAddPage(imgname);
                                 },
                               ));
                             },
