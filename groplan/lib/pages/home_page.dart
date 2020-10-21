@@ -36,7 +36,28 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: Text("GroPlan"),
       ),
-      body: Text("Home"),
+      body: Center(
+          child: Column(
+        children: <Widget>[
+          SizedBox(
+            height: 70,
+          ),
+          Image(
+            image: AssetImage('images/homeImg.png'),
+          ),
+          Text(
+            "No Reminders to Show",
+            style: TextStyle(fontSize: 28),
+          ),
+          Container(
+            width: 160,
+            child: Text(
+              "Click the + button to add new Items now!",
+              style: TextStyle(fontSize: 15, color: Colors.grey),
+            ),
+          )
+        ],
+      )),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
         backgroundColor: Color(0xFF72C077),
