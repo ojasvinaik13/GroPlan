@@ -12,7 +12,6 @@ class _AddPageState extends State<AddPage> {
   final TextEditingController _searchController = new TextEditingController();
   List<dynamic> _list;
   bool _isSearching;
-  // ignore: unused_field
   String _searchText = "";
   List searchresult = new List();
 
@@ -50,18 +49,6 @@ class _AddPageState extends State<AddPage> {
     values();
   }
 
-  // void _handleSearchStart() {
-  //   setState(() {
-  //     _isSearching = true;
-  //   });
-  // }
-
-  // void _handleSearchEnd() {
-  //   setState(() {
-  //     _searchController.clear();
-  //   });
-  // }
-
   void values() {
     _list = List();
     _list.add("Fruits");
@@ -97,7 +84,6 @@ class _AddPageState extends State<AddPage> {
                 onChanged: search,
               ),
             ),
-
             Flexible(
                 child: searchresult.length != 0 ||
                         _searchController.text.isNotEmpty
@@ -163,61 +149,6 @@ class _AddPageState extends State<AddPage> {
                           );
                         },
                       )),
-            // Expanded(
-            //     child: Row(
-            //   children: <Widget>[
-            //     Expanded(
-            //         child: CategoryCard(
-            //       titleText: Text(
-            //         "Fruits",
-            //         style: TextStyle(color: Colors.white),
-            //       ),
-            //       imgname: "images/fruits.jpg",
-            //     )),
-            //     Expanded(
-            //         child: CategoryCard(
-            //       titleText:
-            //           Text("Fruits", style: TextStyle(color: Colors.white)),
-            //       imgname: "images/fruits.jpg",
-            //     )),
-            //   ],
-            // )),
-            // Expanded(
-            //     child: Row(
-            //   children: <Widget>[
-            //     Expanded(
-            //         child: CategoryCard(
-            //       titleText:
-            //           Text("Fruits", style: TextStyle(color: Colors.white)),
-            //       imgname: "images/fruits.jpg",
-            //     )),
-            //     Expanded(
-            //         child: CategoryCard(
-            //       titleText:
-            //           Text("Fruits", style: TextStyle(color: Colors.white)),
-            //       imgname: "images/fruits.jpg",
-            //     )),
-            //   ],
-            // )),
-            // Expanded(
-            //     child: Row(
-            //   children: <Widget>[
-            //     Expanded(
-            //         child: CategoryCard(
-            //       titleText:
-            //           Text("Fruits", style: TextStyle(color: Colors.white)),
-            //       imgname: "images/fruits.jpg",
-            //     )),
-            //     Expanded(
-            //         child: CategoryCard(
-            //       titleText: Text(
-            //         "Fruits",
-            //         style: TextStyle(color: Colors.white),
-            //       ),
-            //       imgname: "images/fruits.jpg",
-            //     )),
-            //   ],
-            // )),
           ],
         ));
   }
