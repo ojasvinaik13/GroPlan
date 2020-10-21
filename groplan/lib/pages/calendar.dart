@@ -44,10 +44,6 @@ class _CalendarPageState extends State<CalendarPage> {
       ),
       body: Center(
         child: _buildTableCalendar(),
-        // Text(
-        //   'This is the calendar page',
-        //   style: TextStyle(fontSize: 24),
-        // ),
       ),
     );
   }
