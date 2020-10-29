@@ -22,7 +22,7 @@ class _CalendarPageState extends State<CalendarPage> {
       calendarStyle: CalendarStyle(
         selectedColor: Color(0xFF72C077),
         todayColor: Color(0xFF72C077),
-        markersColor: Colors.brown[700],
+        // markersColor: Colors.brown[700],
         outsideDaysVisible: false,
       ),
       headerStyle: HeaderStyle(
