@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'pages/home_page.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-void main() => runApp(GroPlan());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  runApp(GroPlan());
+}
 
 class GroPlan extends StatelessWidget {
   @override

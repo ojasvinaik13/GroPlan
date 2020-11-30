@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "801666064316",
+    "firebase_url": "https://groplan-1311.firebaseio.com",
+    "project_id": "groplan-1311",
+    "storage_bucket": "groplan-1311.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:801666064316:android:6e9eaef73cbb1a013815b9",
+        "android_client_info": {
+          "package_name": "com.example.groplan"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "801666064316-7mm4366c2mj0ap2iprh9comb9hf9ecad.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBK7Ca-Yd1ZhMDYkenskFd-4ug7vQ7wLNw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "801666064316-7mm4366c2mj0ap2iprh9comb9hf9ecad.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
