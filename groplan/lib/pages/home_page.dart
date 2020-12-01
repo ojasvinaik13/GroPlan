@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:groplan/pages/add.dart';
 import 'package:groplan/pages/calendar.dart';
 import 'package:groplan/pages/lists.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:async';
 
 class HomePage extends StatefulWidget {
   @override
@@ -9,17 +11,24 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+  var prefSearchKey = "userList";
+  var list;
   int _selectedIndex = 0;
-
   void onTabTapped(int index) {
     setState(() {
       _selectedIndex = index;
       if (_selectedIndex == 0) {
-        Navigator.push(context, MaterialPageRoute(
-          builder: (BuildContext context) {
-            return ListsPage();
-          },
-        ));
+        if (list == null) {
+          getLists();
+          return CircularProgressIndicator();
+        } else {
+          Navigator.push(context, MaterialPageRoute(
+            builder: (BuildContext context) {
+              return ListsPage(list);
+            },
+          ));
+        }
       } else {
         Navigator.push(context, MaterialPageRoute(
           builder: (BuildContext context) {
@@ -27,6 +36,26 @@ class _HomePageState extends State<HomePage> {
           },
         ));
       }
+    });
+  }
+
+  Future getLists() async {
+    final SharedPreferences prefs = await _prefs;
+    list = await prefs.getStringList(prefSearchKey);
+    if (list == null) {
+      list = List<String>();
+      list.add("Tea");
+    }
+    return list;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getLists().then((value) {
+      setState(() {
+        this.list = value;
+      });
     });
   }
 

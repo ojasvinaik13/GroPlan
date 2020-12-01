@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:groplan/components/category_card.dart';
 import 'package:groplan/pages/itemsAdd.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class AddPage extends StatefulWidget {
   @override
@@ -8,8 +9,10 @@ class AddPage extends StatefulWidget {
 }
 
 class _AddPageState extends State<AddPage> {
+  final firestoreInstance = FirebaseFirestore.instance;
   final globalKey = new GlobalKey<ScaffoldState>();
   final TextEditingController _searchController = new TextEditingController();
+  Map<String, List> groceryMap = new Map<String, List>();
   List<dynamic> _list;
   bool _isSearching;
   String _searchText = "";
@@ -47,6 +50,7 @@ class _AddPageState extends State<AddPage> {
     super.initState();
     _isSearching = false;
     values();
+    getAllValues();
   }
 
   void values() {
@@ -99,10 +103,10 @@ class _AddPageState extends State<AddPage> {
                               (listData.toString().toLowerCase()).split(" ");
                           String imgname = name[0];
                           return new CategoryCard(
-                            onClick: () {
+                            onClick: () async {
                               Navigator.push(context, MaterialPageRoute(
                                 builder: (BuildContext context) {
-                                  return ItemsAddPage(imgname);
+                                  return ItemsAddPage(imgname, groceryMap);
                                 },
                               ));
                             },
@@ -130,10 +134,10 @@ class _AddPageState extends State<AddPage> {
                               (listData.toString().toLowerCase()).split(" ");
                           String imgname = name[0];
                           return new CategoryCard(
-                            onClick: () {
+                            onClick: () async {
                               Navigator.push(context, MaterialPageRoute(
                                 builder: (BuildContext context) {
-                                  return ItemsAddPage(imgname);
+                                  return ItemsAddPage(imgname, groceryMap);
                                 },
                               ));
                             },
@@ -151,5 +155,22 @@ class _AddPageState extends State<AddPage> {
                       )),
           ],
         ));
+  }
+
+  void getAllValues() async {
+    await getValues();
+  }
+
+  Future<void> getValues() async {
+    _list.forEach((element) {
+      element = (element.toString().toLowerCase()).split(" ")[0];
+      firestoreInstance
+          .collection('groceries')
+          .doc(element)
+          .get()
+          .then((querySnapshot) {
+        groceryMap[element] = querySnapshot.data()['names'];
+      });
+    });
   }
 }

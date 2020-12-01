@@ -35,6 +35,13 @@ dependencies:
   flutter_local_notifications:
   cloud_firestore: ^0.14.3+1
   firebase_auth: ^0.18.3+1
+  shared_preferences: ^0.5.12+4
+  flutter_launcher_icons: ^0.8.1
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "images/GroplanIcon.png"
 
 dev_dependencies:
   flutter_test:

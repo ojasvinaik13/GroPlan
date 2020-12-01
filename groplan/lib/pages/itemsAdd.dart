@@ -2,27 +2,23 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'dart:async';
 
 class ItemsAddPage extends StatefulWidget {
   String name;
-  ItemsAddPage(String name) {
+  Map<String, List> groceryMap;
+  ItemsAddPage(String name, Map<String, List> groceryMap) {
     this.name = name;
+    this.groceryMap = groceryMap;
   }
   @override
-  _ItemsAddPageState createState() => _ItemsAddPageState(name);
+  _ItemsAddPageState createState() => _ItemsAddPageState(name, groceryMap);
 }
 
 class _ItemsAddPageState extends State<ItemsAddPage> {
-  final firestoreInstance = FirebaseFirestore.instance;
-  // final _auth = FirebaseAuth.instance;
-  // final _result = await _auth.signInAnonymously();
-
   final globalKey = new GlobalKey<ScaffoldState>();
   final TextEditingController _searchController = new TextEditingController();
-  List<dynamic> _list;
+  List<dynamic> _list = new List<dynamic>();
   final TextEditingController quantityController = new TextEditingController();
   final TextEditingController durationController = new TextEditingController();
   final TextEditingController nameController = new TextEditingController();
@@ -41,65 +37,10 @@ class _ItemsAddPageState extends State<ItemsAddPage> {
   // ignore: unused_field
   String _searchText = "";
   List searchresult = new List();
-  var groceryMap = {
-    "fruits": [
-      "Oranges",
-      "Apples",
-      "Strawberry",
-      "Banana",
-      "Blueberry",
-      "Pineapple",
-      "Mosambi",
-      "Watermelon",
-      "Chickoo",
-      "Cherry"
-    ],
-    "vegetables": [
-      "Cabbage",
-      "Potatoes",
-      "Cauliflower",
-      "Chillies",
-      "Brinjal",
-      "Tomatoes"
-    ],
-    "dairy": ["Milk", "Cheese", "Butter", "Yogurt", "Ghee"],
-    "bakery": ["Bread", "Burger Buns", "Pizza Base", "Cake"],
-    "packaged": ["Biscuits", "Wafers", "Noodles"],
-    "refrigerated": ["Water", "Juice", "Ice Cream"],
-    "essentials": [
-      "Rice",
-      "Dal",
-      "Wheat Flour",
-      "Refined Flour",
-      "Salt",
-      "Sugar"
-    ],
-    "oils": [
-      "Sunflower Oil",
-      "Groundnut Oil",
-      "Olive Oil",
-      "Red Chilli Sauce",
-      "Green Chilli Sauce",
-      "Soy sauce"
-    ],
-    "household": [
-      "Detergent",
-      "Mop",
-      "Handwash",
-      "Dish Washer",
-      "Soap",
-      "Scrub Sponge"
-    ],
-    "spices": [
-      "Red Chilli Powder",
-      "Haldi Powder",
-      "Garam masala",
-      "Dhaniya Powder",
-      "Jeera Powder"
-    ]
-  };
-  _ItemsAddPageState(name) {
+
+  _ItemsAddPageState(name, groceryMap) {
     this.name = name;
+    this._list = groceryMap[name];
     _searchController.addListener(() {
       if (_searchController.text.isEmpty) {
         setState(() {
@@ -175,9 +116,11 @@ class _ItemsAddPageState extends State<ItemsAddPage> {
               itemName = getName(customFlag, nameOfItem);
               itemQuantity = quantityController.text;
               itemDuration = durationController.text;
-
+              _showNotification(itemName, itemDuration);
+              nameController.clear();
+              quantityController.clear();
+              durationController.clear();
               Navigator.pop(context);
-              _showNotification();
             },
             child: Text(
               "Add",
@@ -190,31 +133,34 @@ class _ItemsAddPageState extends State<ItemsAddPage> {
         ]).show();
   }
 
-  void _showNotification() async {
-    await _demoNotification();
+  void _showNotification(String name, String duration) async {
+    await _demoNotification(name, duration);
   }
 
-  Future<void> _demoNotification() async {
+  Future<void> _demoNotification(String name, String duration) async {
     var androidPlatformChannelSpecifics = AndroidNotificationDetails(
         "channelId", "channelName", "channelDescription",
         importance: Importance.max,
         priority: Priority.high,
         channelShowBadge: true);
     var scheduledNotificationDateTime =
-        new DateTime.now().add(Duration(seconds: 10));
+        new DateTime.now().add(Duration(seconds: int.parse(duration)));
     var iOSChannelSpecifics = IOSNotificationDetails();
     var platformChannelSpecifics = NotificationDetails(
         android: androidPlatformChannelSpecifics, iOS: iOSChannelSpecifics);
 
-    await flutterLocalNotificationsPlugin.schedule(0, 'Hello', 'reminder',
-        scheduledNotificationDateTime, platformChannelSpecifics,
+    await flutterLocalNotificationsPlugin.schedule(
+        0,
+        'GroPlan Reminder',
+        'You might be running out of ' + name + '. Stock up now!',
+        scheduledNotificationDateTime,
+        platformChannelSpecifics,
         payload: 'test payload');
   }
 
-  void initState() {
+  initState() {
     super.initState();
     _isSearching = false;
-    values();
     initializationSettingsAndroid =
         new AndroidInitializationSettings('app_icon');
     initializationSettingsIOS = new IOSInitializationSettings(
@@ -252,22 +198,6 @@ class _ItemsAddPageState extends State<ItemsAddPage> {
                 )
               ],
             ));
-  }
-
-  void values() async {
-    var myList = groceryMap[name];
-    // var myList;
-    // firestoreInstance
-    //     .collection('groceries')
-    //     .doc(name)
-    //     .get()
-    //     .then((value) async => myList = await value.data()['names']);
-    // print(myList);
-
-    _list = List();
-    for (var i = 0; i < (myList.length); i++) {
-      _list.add(myList[i]);
-    }
   }
 
   @override
