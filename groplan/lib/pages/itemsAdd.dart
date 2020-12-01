@@ -1,8 +1,12 @@
+import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'dart:async';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:async';
+import 'reminders.dart';
 
 class ItemsAddPage extends StatefulWidget {
   String name;
@@ -16,6 +20,9 @@ class ItemsAddPage extends StatefulWidget {
 }
 
 class _ItemsAddPageState extends State<ItemsAddPage> {
+  Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+  var remindSearchKey = "remindersList";
+  List<String> remindersList = new List();
   final globalKey = new GlobalKey<ScaffoldState>();
   final TextEditingController _searchController = new TextEditingController();
   List<dynamic> _list = new List<dynamic>();
@@ -144,7 +151,7 @@ class _ItemsAddPageState extends State<ItemsAddPage> {
         priority: Priority.high,
         channelShowBadge: true);
     var scheduledNotificationDateTime =
-        new DateTime.now().add(Duration(seconds: int.parse(duration)));
+        new DateTime.now().add(Duration(days: int.parse(duration)));
     var iOSChannelSpecifics = IOSNotificationDetails();
     var platformChannelSpecifics = NotificationDetails(
         android: androidPlatformChannelSpecifics, iOS: iOSChannelSpecifics);
@@ -156,6 +163,13 @@ class _ItemsAddPageState extends State<ItemsAddPage> {
         scheduledNotificationDateTime,
         platformChannelSpecifics,
         payload: 'test payload');
+    Reminders remindObj =
+        new Reminders(name, scheduledNotificationDateTime.toString());
+    final SharedPreferences prefs = await _prefs;
+    remindersList = prefs.getStringList(remindSearchKey);
+    remindersList.add(jsonEncode(remindObj.toJson()));
+    prefs.setStringList(remindSearchKey, remindersList);
+    print(prefs.getStringList(remindSearchKey));
   }
 
   initState() {
