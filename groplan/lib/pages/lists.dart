@@ -48,14 +48,21 @@ class _ListsPageState extends State<ListsPage> {
   }
 
   Widget _buildShopItem(String toshopText, int index) {
-    // return new ListTile(title: new Text(toshopText));
     return new Dismissible(
       key: Key(toshopText),
       background: Container(color: Colors.redAccent[700]),
       direction: DismissDirection.endToStart,
-      child: ListTile(
-        title: new Text(toshopText),
-        tileColor: Color(0x5072C077),
+      child: Column(
+        children: [
+          ListTile(
+            title: new Text(toshopText),
+            tileColor: Color(0x5072C077),
+          ),
+          Divider(
+            height: 1,
+            thickness: 2,
+          ),
+        ],
       ),
       onDismissed: (direction) {
         setState(() {

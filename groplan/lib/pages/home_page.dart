@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:groplan/pages/add.dart';
 import 'package:groplan/pages/calendar.dart';
@@ -19,6 +20,7 @@ class _HomePageState extends State<HomePage> {
   var prefSearchKey = "userList";
   var remindSearchKey = "remindersList";
   var list;
+  Map<DateTime, List> calDays;
   int _selectedIndex = 0;
   Future getStoredReminders() async {
     final SharedPreferences prefs = await _prefs;
@@ -35,6 +37,17 @@ class _HomePageState extends State<HomePage> {
       });
     });
     return remindersList;
+  }
+
+  getCalendarEvents() {
+    remindersList.forEach((element) {
+      DateTime dt =
+          DateTime.parse(Reminders.fromJson(jsonDecode(element)).dateTime);
+      DateTime date = DateTime(dt.year, dt.month, dt.day);
+      calDays.addAll({
+        date: [Reminders.fromJson(jsonDecode(element)).name]
+      });
+    });
   }
 
   void onTabTapped(int index) {
@@ -54,7 +67,7 @@ class _HomePageState extends State<HomePage> {
       } else {
         Navigator.push(context, MaterialPageRoute(
           builder: (BuildContext context) {
-            return CalendarPage();
+            return CalendarPage(calDays);
           },
         ));
       }
@@ -77,6 +90,7 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       getStoredReminders();
     });
+    getCalendarEvents();
     getLists().then((value) {
       setState(() {
         this.list = value;
@@ -105,12 +119,89 @@ class _HomePageState extends State<HomePage> {
                           .difference(DateTime.now())
                           .inDays
                           .toString();
-                      return new ListTile(
-                          title: new Text(robj.name + " " + days));
+                      return new Column(
+                        children: [
+                          if (index == 0)
+                            Column(
+                              children: [
+                                SizedBox(height: 20),
+                                Row(
+                                  children: [
+                                    Padding(padding: EdgeInsets.only(left: 30)),
+                                    Text(
+                                      "Upcoming Reminders",
+                                      style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                    Spacer(),
+                                  ],
+                                )
+                              ],
+                            ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Container(
+                            width: 9 * MediaQuery.of(context).size.width / 10,
+                            height: 80,
+                            child: Row(
+                              children: [
+                                Container(
+                                  decoration: BoxDecoration(
+                                      gradient: LinearGradient(
+                                          begin: Alignment.topCenter,
+                                          end: Alignment.bottomCenter,
+                                          colors: [
+                                        Color(0xff3850ec),
+                                        Color(0xff54d3f3)
+                                      ])),
+                                  width: 5,
+                                  height: 100,
+                                ),
+                                Padding(padding: EdgeInsets.only(left: 20)),
+                                Text(
+                                  robj.name,
+                                  style: TextStyle(fontSize: 20),
+                                ),
+                                Spacer(),
+                                Text(
+                                  days,
+                                  style: TextStyle(
+                                      fontSize: 30, color: Color(0xff3850ec)),
+                                ),
+                                if (int.parse(days) > 1)
+                                  Text(" days left")
+                                else
+                                  Text(" day left"),
+                                Padding(
+                                  padding: EdgeInsets.only(right: 20),
+                                )
+                              ],
+                            ),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.only(
+                                  topRight: Radius.circular(10),
+                                  bottomRight: Radius.circular(10)),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.3),
+                                  spreadRadius: 5,
+                                  blurRadius: 5,
+                                  offset: Offset(0, 7),
+                                )
+                              ],
+                              color: Color(0xffffffff),
+                            ),
+                          ),
+                        ],
+                      );
                     }
                   });
             } else {
-              return CircularProgressIndicator();
+              return Center(
+                child: CircularProgressIndicator(),
+              );
             }
           })
 

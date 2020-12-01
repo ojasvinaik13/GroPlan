@@ -2,27 +2,39 @@ import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class CalendarPage extends StatefulWidget {
+  Map<DateTime, List> calDays;
+  CalendarPage(Map<DateTime, List> calDays) {
+    this.calDays = calDays;
+  }
   @override
-  _CalendarPageState createState() => _CalendarPageState();
+  _CalendarPageState createState() => _CalendarPageState(calDays);
 }
 
 class _CalendarPageState extends State<CalendarPage> {
   CalendarController _calendarController;
+  Map<DateTime, List> calDays;
   @override
   void initState() {
     super.initState();
     _calendarController = CalendarController();
   }
 
+  _CalendarPageState(Map<DateTime, List> calDays) {
+    this.calDays = calDays;
+  }
+
   Widget _buildTableCalendar() {
     return TableCalendar(
       startDay: DateTime.now(),
+      holidays: calDays,
       calendarController: _calendarController,
       startingDayOfWeek: StartingDayOfWeek.monday,
       calendarStyle: CalendarStyle(
+        outsideHolidayStyle: TextStyle(color: Colors.brown[700]),
+        holidayStyle: TextStyle(color: Colors.brown[700]),
         selectedColor: Color(0xFF72C077),
         todayColor: Color(0xFF72C077),
-        // markersColor: Colors.brown[700],
+        markersColor: Colors.brown[700],
         outsideDaysVisible: false,
       ),
       headerStyle: HeaderStyle(
