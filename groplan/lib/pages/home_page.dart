@@ -24,7 +24,9 @@ class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
   Future getStoredReminders() async {
     final SharedPreferences prefs = await _prefs;
-    // Reminders remindObj = Reminders("Apples", DateTime.now(), "7");
+    // prefs.setStringList(remindSearchKey, remindersList);
+    // Reminders remindObj =
+    //     Reminders("Bread", DateTime.now().add(Duration(days: 3)).toString());
     // remindersList.add(json.encode(remindObj));
     // prefs.setStringList(remindSearchKey, remindersList);
     remindersList = await prefs.getStringList(remindSearchKey);
@@ -39,15 +41,26 @@ class _HomePageState extends State<HomePage> {
     return remindersList;
   }
 
-  getCalendarEvents() {
-    remindersList.forEach((element) {
-      DateTime dt =
-          DateTime.parse(Reminders.fromJson(jsonDecode(element)).dateTime);
-      DateTime date = DateTime(dt.year, dt.month, dt.day);
-      calDays.addAll({
-        date: [Reminders.fromJson(jsonDecode(element)).name]
-      });
-    });
+  Future getCalendarEvents() {
+    if (remindersList != null) {
+      print("Hello");
+      // remindersList.forEach((element) {
+
+      // });
+      for (int i = 0; i < remindersList.length; i++) {
+        print("Inside loop");
+        DateTime dt = DateTime.parse(
+            Reminders.fromJson(jsonDecode(remindersList[i])).dateTime);
+        DateTime date = DateTime(dt.year, dt.month, dt.day);
+        print(date);
+        calDays.addAll({
+          date: [Reminders.fromJson(jsonDecode(remindersList[i])).name]
+        });
+      }
+    } else {
+      print("Hi");
+    }
+    // print(calDays);
   }
 
   void onTabTapped(int index) {
@@ -77,10 +90,10 @@ class _HomePageState extends State<HomePage> {
   Future getLists() async {
     final SharedPreferences prefs = await _prefs;
     list = await prefs.getStringList(prefSearchKey);
-    if (list == null) {
-      list = List<String>();
-      list.add("Tea");
-    }
+    // if (list == null) {
+    //   list = List<String>();
+    //   list.add("Tea");
+    // }
     return list;
   }
 
@@ -90,11 +103,13 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       getStoredReminders();
     });
-    getCalendarEvents();
     getLists().then((value) {
       setState(() {
         this.list = value;
       });
+    });
+    setState(() {
+      getCalendarEvents();
     });
   }
 
@@ -115,9 +130,9 @@ class _HomePageState extends State<HomePage> {
                     if (index < remindersList.length) {
                       Reminders robj =
                           Reminders.fromJson(jsonDecode(remindersList[index]));
-                      String days = DateTime.parse(robj.dateTime)
-                          .difference(DateTime.now())
-                          .inDays
+                      String days = (DateTime.parse(robj.dateTime)
+                              .difference(DateTime.now())
+                              .inDays)
                           .toString();
                       return new Column(
                         children: [

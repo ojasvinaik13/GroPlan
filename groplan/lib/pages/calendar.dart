@@ -21,6 +21,7 @@ class _CalendarPageState extends State<CalendarPage> {
 
   _CalendarPageState(Map<DateTime, List> calDays) {
     this.calDays = calDays;
+    print(calDays);
   }
 
   Widget _buildTableCalendar() {
